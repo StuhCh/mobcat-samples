@@ -20,11 +20,11 @@ class _MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("Register"),
                 onPressed: registerButtonClicked,
               ),
-              FlatButton(
+              TextButton(
                 child: Text("Deregister"),
                 onPressed: deregisterButtonClicked,
               ),
@@ -69,7 +69,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();

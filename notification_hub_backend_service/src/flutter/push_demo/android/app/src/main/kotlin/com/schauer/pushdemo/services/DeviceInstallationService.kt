@@ -1,10 +1,11 @@
-package com.mobcat.pushdemo
+package com.schauer.pushdemo.services
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.provider.Settings.Secure
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.schauer.pushdemo.PushNotificationsFirebaseMessagingService
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -13,7 +14,7 @@ import io.flutter.plugin.common.MethodChannel
 class DeviceInstallationService {
 
     companion object {
-        const val DEVICE_INSTALLATION_CHANNEL = "com.mobcat.pushdemo/deviceinstallation"
+        const val DEVICE_INSTALLATION_CHANNEL = "com.schauer.pushdemo/deviceinstallation"
         const val GET_DEVICE_ID = "getDeviceId"
         const val GET_DEVICE_TOKEN = "getDeviceToken"
         const val GET_DEVICE_PLATFORM = "getDevicePlatform"

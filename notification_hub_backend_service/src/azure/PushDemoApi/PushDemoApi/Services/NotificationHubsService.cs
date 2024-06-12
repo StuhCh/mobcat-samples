@@ -78,7 +78,7 @@ namespace PushDemoApi.Services
             return true;
         }
 
-        public async Task<bool> RequestNotificationAsync(NotificationRequest notificationRequest, CancellationToken token)
+		public async Task<bool> RequestNotificationAsync(NotificationRequest notificationRequest, CancellationToken token)
         {
             if ((notificationRequest.Silent &&
                 string.IsNullOrWhiteSpace(notificationRequest?.Action)) ||
@@ -144,7 +144,7 @@ namespace PushDemoApi.Services
             var sendTasks = new Task[]
             {
                 _hub.SendFcmNativeNotificationAsync(androidPayload, token),
-                _hub.SendAppleNativeNotificationAsync(iOSPayload, token)
+                //_hub.SendAppleNativeNotificationAsync(iOSPayload, token)
             };
 
             return Task.WhenAll(sendTasks);
@@ -155,10 +155,23 @@ namespace PushDemoApi.Services
             var sendTasks = new Task[]
             {
                 _hub.SendFcmNativeNotificationAsync(androidPayload, tags, token),
-                _hub.SendAppleNativeNotificationAsync(iOSPayload, tags, token)
+                //_hub.SendAppleNativeNotificationAsync(iOSPayload, tags, token)
             };
 
             return Task.WhenAll(sendTasks);
         }
-    }
+
+		public async Task<CollectionQueryResult<RegistrationDescription>> GetAllRegistrations(int numberOfResults)
+		{
+            var result = await _hub.GetAllRegistrationsAsync(10000);
+            return result;
+        }
+
+		//async Task<CollectionQueryResult<RegistrationDescription>> GetAllRegistrations(int numberOfResults)
+		//      {
+		//	var result = await _hub.GetAllRegistrationsAsync(10000);
+		//          return result;
+		//}
+
+	}
 }

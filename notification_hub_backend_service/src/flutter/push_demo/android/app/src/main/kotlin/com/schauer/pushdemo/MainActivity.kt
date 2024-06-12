@@ -1,11 +1,12 @@
-package com.mobcat.pushdemo
+package com.schauer.pushdemo
 
 import android.content.Intent
 import android.os.Bundle
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.mobcat.pushdemo.services.NotificationActionService
-import com.mobcat.pushdemo.services.NotificationRegistrationService
+import com.schauer.pushdemo.services.NotificationActionService
+import com.schauer.pushdemo.services.NotificationRegistrationService
+import com.schauer.pushdemo.services.DeviceInstallationService
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
@@ -21,7 +22,7 @@ class MainActivity: FlutterActivity() {
             PushNotificationsFirebaseMessagingService.notificationRegistrationService = NotificationRegistrationService(it)
         }
 
-        if(deviceInstallationService?.playServicesAvailable) {
+        if(deviceInstallationService?.playServicesAvailable == true) {
             FirebaseInstanceId.getInstance().instanceId
                     .addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful)
@@ -43,12 +44,14 @@ class MainActivity: FlutterActivity() {
         if (intent.hasExtra("action")) {
             var action = intent.getStringExtra("action");
 
-            if (action.isNotEmpty()) {
-                if (launchAction) {
-                    PushNotificationsFirebaseMessagingService.notificationActionService?.launchAction = action
-                }
-                else {
-                    PushNotificationsFirebaseMessagingService.notificationActionService?.triggerAction(action)
+            if (action != null) {
+                if (action.isNotEmpty()) {
+                    if (launchAction) {
+                        PushNotificationsFirebaseMessagingService.notificationActionService?.launchAction = action
+                    }
+                    else {
+                        PushNotificationsFirebaseMessagingService.notificationActionService?.triggerAction(action)
+                    }
                 }
             }
         }

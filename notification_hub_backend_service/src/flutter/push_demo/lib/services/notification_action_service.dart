@@ -4,7 +4,7 @@ import 'package:push_demo/models/push_demo_action.dart';
 
 class NotificationActionService {
   static const notificationAction =
-      const MethodChannel('com.mobcat.pushdemo/notificationaction');
+      const MethodChannel('com.schauer.pushdemo/notificationaction');
   static const String triggerActionChannelMethod = "triggerAction";
   static const String getLaunchActionChannelMethod = "getLaunchAction";
 

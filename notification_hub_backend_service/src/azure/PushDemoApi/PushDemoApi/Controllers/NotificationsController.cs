@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.NotificationHubs;
 using PushDemoApi.Models;
 using PushDemoApi.Services;
 
@@ -78,5 +79,14 @@ namespace PushDemoApi.Controllers
 
             return new OkResult();
         }
-    }
+
+		[HttpGet]
+		[Route("test")]
+		public async Task<IActionResult> RequestPush()
+		{
+            var result = await _notificationService.GetAllRegistrations(10000);
+
+			return new ObjectResult(result);
+		}
+	}
 }

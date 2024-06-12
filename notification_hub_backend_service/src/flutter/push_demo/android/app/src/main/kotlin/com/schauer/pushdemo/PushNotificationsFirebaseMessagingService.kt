@@ -1,11 +1,11 @@
-package com.mobcat.pushdemo
+package com.schauer.pushdemo
 
 import android.os.Handler
 import android.os.Looper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.mobcat.pushdemo.services.NotificationActionService
-import com.mobcat.pushdemo.services.NotificationRegistrationService
+import com.schauer.pushdemo.services.NotificationActionService
+import com.schauer.pushdemo.services.NotificationRegistrationService
 
 class PushNotificationsFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -17,7 +17,7 @@ class PushNotificationsFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         Handler(Looper.getMainLooper()).post {
-            PushNotificationsFirebaseMessagingService.token = token
+            Companion.token = token
             notificationRegistrationService?.refreshRegistration()
         }
     }

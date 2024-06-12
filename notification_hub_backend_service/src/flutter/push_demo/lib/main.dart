@@ -1,4 +1,7 @@
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:push_demo/models/push_demo_action.dart';
 import 'package:push_demo/services/notification_action_service.dart';
 import 'package:push_demo/main_page.dart';
@@ -7,6 +10,11 @@ final navigatorKey = GlobalKey<NavigatorState>();
 final notificationActionService = NotificationActionService();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var status = await Permission.notification.status;
+  if (!status.isGranted) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   runApp(MaterialApp(home: MainPage(), navigatorKey: navigatorKey,));
   notificationActionService.actionTriggered.listen((event) { notificationActionTriggered(event as PushDemoAction); });
   await notificationActionService.checkLaunchAction();
@@ -31,7 +39,7 @@ Future<void> showActionAlert({ message: String }) async {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();

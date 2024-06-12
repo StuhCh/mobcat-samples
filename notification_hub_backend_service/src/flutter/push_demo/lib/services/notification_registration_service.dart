@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class NotificationRegistrationService {
   static const notificationRegistration =
-      const MethodChannel('com.mobcat.pushdemo/notificationregistration');
+      const MethodChannel('com.schauer.pushdemo/notificationregistration');
 
   static const String refreshRegistrationChannelMethod = "refreshRegistration";
   static const String installationsEndpoint = "api/notifications/installations";
@@ -60,8 +60,10 @@ class NotificationRegistrationService {
       final deviceInstallation =
           DeviceInstallation(deviceId, platform, token, tags);
 
+      String json = jsonEncode(deviceInstallation);
+
       final response = await http.put(installationsUrl,
-          body: jsonEncode(deviceInstallation),
+          body: json,
           headers: {"apikey": apikey, "Content-Type": "application/json"});
 
       if (response.statusCode != 200) {
@@ -73,8 +75,10 @@ class NotificationRegistrationService {
       await secureStorage.write(key: cachedDeviceTokenKey, value: token);
       await secureStorage.write(key: cachedTagsKey, value: serializedTags);
     } on PlatformException catch (e) {
+      print("PlatformException: ${e.message}, details: ${e.details}");
       throw e.message;
     } catch (e) {
+      print("General exception: $e");
       throw "Unable to register device: $e";
     }
   }
