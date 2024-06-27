@@ -5,6 +5,7 @@ import android.content.Context
 import android.provider.Settings.Secure
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.messaging.FirebaseMessaging
 import com.schauer.pushdemo.PushNotificationsFirebaseMessagingService
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
@@ -49,7 +50,22 @@ class DeviceInstallationService {
         return token
     }
 
-    fun getDevicePlatform() : String = "fcm"
+    // Function to retrieve FCM v1 token asynchronously
+    private fun getFCMv1Token(onSuccess: (String) -> Unit, onError: (Exception) -> Unit) {
+        FirebaseMessaging.getInstance().token
+                .addOnSuccessListener { token ->
+                    if (token.isNullOrEmpty()) {
+                        onError(Exception("Unable to resolve FCM v1 token."))
+                    } else {
+                        onSuccess(token)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    onError(e)
+                }
+    }
+
+    fun getDevicePlatform() : String = "fcmv1"
 
     private fun handleDeviceInstallationCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
@@ -68,12 +84,18 @@ class DeviceInstallationService {
         }
     }
 
+    // Adjust your existing method to work with Flutter's MethodChannel
     private fun getDeviceToken(result: MethodChannel.Result) {
         try {
-            val token = getDeviceToken()
-            result.success(token)
-        }
-        catch (e: Exception) {
+            getFCMv1Token(
+                    onSuccess = { token ->
+                        result.success(token)
+                    },
+                    onError = { error ->
+                        result.error("ERROR", error.message, error)
+                    }
+            )
+        } catch (e: Exception) {
             result.error("ERROR", e.message, e)
         }
     }

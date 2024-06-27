@@ -10,7 +10,7 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Models\PushTemplates.cs">

@@ -36,7 +36,8 @@ class _MainPageState extends State<MainPage> {
 
   void registerButtonClicked() async {
     try {
-      await notificationRegistrationService.registerDevice(List<String>());
+      //Adjust for different Channels if needed
+      await notificationRegistrationService.registerDevice(["all"]);
       await showAlert(message: "Device registered");
     }
     catch (e) {

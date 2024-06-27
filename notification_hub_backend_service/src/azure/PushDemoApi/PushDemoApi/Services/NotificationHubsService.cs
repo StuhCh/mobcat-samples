@@ -26,7 +26,10 @@ namespace PushDemoApi.Services
             _installationPlatform = new Dictionary<string, NotificationPlatform>
             {
                 { nameof(NotificationPlatform.Apns).ToLower(), NotificationPlatform.Apns },
-                { nameof(NotificationPlatform.Fcm).ToLower(), NotificationPlatform.Fcm }
+                //Altes FCM
+                //{ nameof(NotificationPlatform.Fcm).ToLower(), NotificationPlatform.Fcm },
+                //FCM V1
+                { nameof(NotificationPlatform.FcmV1).ToLower(), NotificationPlatform.FcmV1 }
             };
         }
 
@@ -143,9 +146,12 @@ namespace PushDemoApi.Services
         {
             var sendTasks = new Task[]
             {
-                _hub.SendFcmNativeNotificationAsync(androidPayload, token),
+                //Message über FCM V1
+                _hub.SendFcmV1NativeNotificationAsync(androidPayload, token)
+                //Message über Legacy FCM (alt)
+				//_hub.SendFcmNativeNotificationAsync(androidPayload, token),
                 //_hub.SendAppleNativeNotificationAsync(iOSPayload, token)
-            };
+			};
 
             return Task.WhenAll(sendTasks);
         }
@@ -154,24 +160,20 @@ namespace PushDemoApi.Services
         {
             var sendTasks = new Task[]
             {
-                _hub.SendFcmNativeNotificationAsync(androidPayload, tags, token),
+                //Message über FCM V1
+                _hub.SendFcmV1NativeNotificationAsync(androidPayload, tags, token),
+                //Message über Legacy FCM (alt)
+				//_hub.SendFcmNativeNotificationAsync(androidPayload, tags, token),
                 //_hub.SendAppleNativeNotificationAsync(iOSPayload, tags, token)
             };
 
             return Task.WhenAll(sendTasks);
         }
 
-		public async Task<CollectionQueryResult<RegistrationDescription>> GetAllRegistrations(int numberOfResults)
+		public async Task<ICollectionQueryResult<RegistrationDescription>> GetAllRegistrations(int numberOfResults)
 		{
             var result = await _hub.GetAllRegistrationsAsync(10000);
             return result;
         }
-
-		//async Task<CollectionQueryResult<RegistrationDescription>> GetAllRegistrations(int numberOfResults)
-		//      {
-		//	var result = await _hub.GetAllRegistrationsAsync(10000);
-		//          return result;
-		//}
-
 	}
 }
